@@ -25,12 +25,12 @@ jobs:
             cd /home/vaidityatanwar/codemelon &&
             git pull &&
             
-            docker stop codemelon-app || true &&
-            docker rm codemelon-app || true &&
+            sudo docker stop codemelon-app || true &&
+            sudo docker rm codemelon-app || true &&
             
-            docker build -t codemelon-backend:latest . &&
+            sudo docker build -t codemelon-backend:latest . &&
             
-            docker run -d -p 8000:8000 --name codemelon-app \
+            sudo docker run -d -p 8000:8000 --name codemelon-app \
               -e DB_CONFIG_URL=${{ secrets.DB_CONFIG_URL }} \
               -e SERVER_KEY=${{ secrets.SERVER_KEY }} \
               -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
