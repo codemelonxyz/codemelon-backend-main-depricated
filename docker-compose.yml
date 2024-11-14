@@ -26,16 +26,23 @@ services:
       dockerfile: Dockerfile  # Optional if it's the default Dockerfile
     image: codemelon-backend:latest  # Image name
     container_name: codemelon-app
+    env_file:
+      - .env
     environment:
       - PORT=8000
     labels:
       - "traefik.enable=true"  # Enable Traefik for this service
       - "traefik.http.routers.codemelon-app.rule=Host(`api.codemelon.xyz`)"  # Route based on the host
       - "traefik.http.routers.codemelon-app.entrypoints=websecure"  # Use HTTPS (websecure)
+      - "traefik.http.routers.codemelon-app.tls.certresolver=myresolver"  # Use the defined certificate resolver
       - "traefik.http.services.codemelon-app.loadbalancer.server.port=8000"  # Route to backend on port 8000
+      - "traefik.http.routers.codemelon-app-http.rule=Host(`api.codemelon.xyz`)"  # HTTP router rule
+      - "traefik.http.routers.codemelon-app-http.entrypoints=web"  # HTTP entrypoint
+      - "traefik.http.routers.codemelon-app-http.middlewares=redirect-to-https"  # Redirect middleware
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"  # Redirect to HTTPS
     restart: unless-stopped
     ports:
       - "8000:8000"  # Expose internal port for app container (not necessary for Traefik, but useful for debugging)
-    
+
 volumes:
   letsencrypt:
