@@ -1,0 +1,39 @@
+# .github/workflows/deploy.yml
+name: Deploy to Google Cloud VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy application
+        run: |
+          ssh -o StrictHostKeyChecking=no vaidityatanwar@34.131.222.215 '
+            cd /home/vaidityatanwar/codemelon &&
+            git pull &&
+            
+            docker stop codemelon-app || true &&
+            docker rm codemelon-app || true &&
+            
+            docker build -t codemelon-backend:latest . &&
+            
+            docker run -d -p 8000:8000 --name codemelon-app \
+              -e DB_CONFIG_URL=${{ secrets.DB_CONFIG_URL }} \
+              -e SERVER_KEY=${{ secrets.SERVER_KEY }} \
+              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+              -e JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }} \
+              codemelon-backend:latest
+          '

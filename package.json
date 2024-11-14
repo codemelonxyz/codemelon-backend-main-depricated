@@ -2,9 +2,10 @@
   "name": "codemelon-backend-main",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js",
+    "start": "pm2-runtime index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "@codemelon",
@@ -18,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.4",
     "nodemon": "^3.1.7",
+    "pm2": "^5.4.3",
     "uuid": "^11.0.3"
   }
 }
