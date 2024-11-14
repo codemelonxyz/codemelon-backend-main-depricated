@@ -23,8 +23,14 @@ jobs:
           ssh -o StrictHostKeyChecking=no vaidityatanwar@${{ secrets.VM_Static_Ip }} '
             cd /home/vaidityatanwar/codemelon &&
             git pull &&
-            
-            sudo docker-compose down || true &&  # Stop and remove any existing containers
-            sudo docker-compose build &&  # Build the images if necessary
-            sudo docker-compose up -d  # Start containers in detached mode
+            touch letsencrypt/acme.json &&
+            chmod 600 letsencrypt/acme.json &&
+            sudo docker-compose down || true &&
+            sudo docker-compose build &&
+            sudo docker-compose up -d
           '
+        env:
+          DB_CONFIG_URL: ${{ secrets.DB_CONFIG_URL }}
+          SERVER_KEY: ${{ secrets.SERVER_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
