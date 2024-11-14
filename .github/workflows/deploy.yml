@@ -21,7 +21,7 @@ jobs:
 
       - name: Deploy application
         run: |
-          ssh -o StrictHostKeyChecking=no vaidityatanwar@34.131.222.215 '
+          ssh -o StrictHostKeyChecking=no vaidityatanwar@${{ secrets.VM_Static_Ip }} '
             cd /home/vaidityatanwar/codemelon &&
             git pull &&
             
