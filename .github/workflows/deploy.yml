@@ -22,11 +22,11 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no vaidityatanwar@${{ secrets.VM_Static_Ip }} '
             cd /home/vaidityatanwar/codemelon &&
-            sudo git pull &&
-            sudo echo "DB_CONFIG_URL=${DB_CONFIG_URL}" > .env &&
-            sudo echo "SERVER_KEY=${SERVER_KEY}" >> .env &&
-            sudo echo "JWT_SECRET=${JWT_SECRET}" >> .env &&
-            sudo echo "JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}" >> .env &&
+            git pull &&
+            echo "DB_CONFIG_URL=${DB_CONFIG_URL}" > .env &&
+            echo "SERVER_KEY=${SERVER_KEY}" >> .env &&
+            echo "JWT_SECRET=${JWT_SECRET}" >> .env &&
+            echo "JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}" >> .env &&
             sudo touch letsencrypt/acme.json &&
             sudo chmod 600 letsencrypt/acme.json &&
             sudo docker-compose down || true &&
