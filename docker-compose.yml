@@ -28,10 +28,6 @@ services:
     container_name: codemelon-app
     environment:
       - PORT=8000
-      - DB_CONFIG_URL=${DB_CONFIG_URL}
-      - SERVER_KEY=${SERVER_KEY}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
     labels:
       - "traefik.enable=true"  # Enable Traefik for this service
       - "traefik.http.routers.codemelon-app.rule=Host(`api.codemelon.xyz`)"  # Route based on the host
