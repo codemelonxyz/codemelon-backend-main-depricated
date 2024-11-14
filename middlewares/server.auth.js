@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default async (req, res, next) => {
     const { server_key } = req.headers;
 
