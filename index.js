@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import serverAuth from './middlewares/server.auth.js';
 import serverHealthRoutes from './routes/serverhealth.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1', serverHealthRoutes);
-
+app.use('/api/v1/auth', authRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${process.env.PORT}`);

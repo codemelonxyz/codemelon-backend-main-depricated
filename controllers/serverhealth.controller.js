@@ -13,12 +13,14 @@ class serverHealthController {
     }
 
     static async checkDatabaseConnection(req, res) {
+        let connection;
         try {
-            await pool.getConnection();
-            await pool.releaseConnection();
+            connection = await pool.getConnection();
             res.status(200).json({ status: 'Database connection is up and running' });
         } catch (error) {
             res.status(500).json({ error: error.message });
+        } finally {
+            if (connection) connection.release();
         }
     }
 }
