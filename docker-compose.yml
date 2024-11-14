@@ -11,10 +11,6 @@ services:
       - "8000:8000"  # Map port 8000 on the host to port 8000 in the container
     environment:
       - PORT=8000
-      - DB_CONFIG_URL=${DB_CONFIG_URL}  # Injected from the environment variable
-      - SERVER_KEY=${SERVER_KEY}  # Injected from the environment variable
-      - JWT_SECRET=${JWT_SECRET}  # Injected from the environment variable
-      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}  # Injected from the environment variable
     # Remove or comment out the volume mounting for production
     # volumes:
     #   - .:/usr/src/app  # Mount current directory to /usr/src/app in the container
