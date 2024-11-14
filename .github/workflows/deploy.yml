@@ -31,6 +31,7 @@ jobs:
             sudo docker build -t codemelon-backend:latest . &&
             
             sudo docker run -d -p 8000:8000 --name codemelon-app \
+              -e PORT=8000 \
               -e DB_CONFIG_URL=${{ secrets.DB_CONFIG_URL }} \
               -e SERVER_KEY=${{ secrets.SERVER_KEY }} \
               -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
