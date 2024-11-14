@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: Deploy to Google Cloud VM
 
 on:
@@ -25,16 +24,7 @@ jobs:
             cd /home/vaidityatanwar/codemelon &&
             git pull &&
             
-            sudo docker stop codemelon-app || true &&
-            sudo docker rm codemelon-app || true &&
-            
-            sudo docker build -t codemelon-backend:latest . &&
-            
-            sudo docker run -d -p 8000:8000 --name codemelon-app \
-              -e PORT=8000 \
-              -e DB_CONFIG_URL=${{ secrets.DB_CONFIG_URL }} \
-              -e SERVER_KEY=${{ secrets.SERVER_KEY }} \
-              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              -e JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }} \
-              codemelon-backend:latest
+            sudo docker-compose down || true &&  # Stop and remove any existing containers
+            sudo docker-compose build &&  # Build the images if necessary
+            sudo docker-compose up -d  # Start containers in detached mode
           '

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  codemelon-app:
+    build:
+      context: .  # Use the current directory for the build context
+      dockerfile: Dockerfile  # Specify the Dockerfile name (optional if it's default "Dockerfile")
+    image: codemelon-backend:latest  # The image name you will build
+    container_name: codemelon-app
+    ports:
+      - "8000:8000"  # Map port 8000 on the host to port 8000 in the container
+    environment:
+      - PORT=8000
+      - DB_CONFIG_URL=${DB_CONFIG_URL}  # Injected from the environment variable
+      - SERVER_KEY=${SERVER_KEY}  # Injected from the environment variable
+      - JWT_SECRET=${JWT_SECRET}  # Injected from the environment variable
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}  # Injected from the environment variable
+    # Remove or comment out the volume mounting for production
+    # volumes:
+    #   - .:/usr/src/app  # Mount current directory to /usr/src/app in the container
+    restart: unless-stopped  # Restart the container unless it is stopped manually
+
+  # Optionally, you can add other services such as a database or cache here if needed
+  # db:
+  #   image: postgres:latest
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: codemelon
+  #   volumes:
+  #     - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:  # Volume to persist DB data (if applicable)
