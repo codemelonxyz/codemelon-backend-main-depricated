@@ -4,6 +4,9 @@ dotenv.config();
 export default async (req, res, next) => {
     const { server_key } = req.headers;
 
+    console.log(server_key);
+    console.log(process.env.SERVER_KEY);
+
     if (!server_key) {
         return res.status(401).json({
             status: 'error',
