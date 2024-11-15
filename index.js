@@ -16,7 +16,10 @@ app.use(cors());
 app.use(serverAuth);
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.status(200).json({
+        message: "Welcome to codemelon apis",
+        instruction: "Go to codemelon.xyz/developers for more"
+    })
 });
 
 app.use('/api/v1', serverHealthRoutes);
