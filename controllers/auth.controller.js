@@ -17,7 +17,7 @@ class authController {
             if (status === false) {
                 return res.status(400).json({ error: 'Error creating user' });
             }
-            const token = await jwtServices.generateToken({ username, email, isAdmin: 0 }, '24h');
+            const token = await jwtServices.generateToken({id, username, email, isAdmin: 0 }, '24h');
             res.status(201).json({ message: 'User created successfully', token, token_type: 'Bearer', token_expires_in: '24h' });
         } catch (err) {
             console.error(err);
@@ -39,7 +39,7 @@ class authController {
             if (!checkPassword) {
                 return res.status(401).json({ error: "Password not correct" });
             }
-            const token = await jwtServices.generateToken({ username: user.username, email: user.email, isAdmin: user.isAdmin }, '24h');
+            const token = await jwtServices.generateToken({ id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin }, '24h');
             res.status(201).json({ message: 'User created successfully', token, token_type: 'Bearer', token_expires_in: '24h' });
         } else {
             res.status(404).json({
