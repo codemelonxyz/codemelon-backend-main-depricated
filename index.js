@@ -47,8 +47,5 @@ app.use('/api/v1', serverHealthRoutes);
 // app.use('/api/v1/protected', serverAuth, protectedRoutes);
 
 app.listen(port, () => {
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
   console.log(`Server is running on port ${port}`);
 });
