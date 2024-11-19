@@ -20,6 +20,7 @@ const allowedOrigins = [
 const corsOptions = {
   origin: true, // Allow all origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: '*', // Allow all headers
   credentials: true,
   optionsSuccessStatus: 204
 };
@@ -27,7 +28,6 @@ const corsOptions = {
 // Global Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(serverAuth);
 
 // Routes
 app.get('/', (req, res) => {
@@ -39,6 +39,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', serverHealthRoutes);
 app.use('/api/v1/auth', authRoutes);
+
+// Apply serverAuth to protected routes if necessary
+// app.use('/api/v1/protected', serverAuth, protectedRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

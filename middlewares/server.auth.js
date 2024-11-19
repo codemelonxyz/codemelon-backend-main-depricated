@@ -2,9 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default async (req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    return next();
-  }
 
   const server_key = req.headers['server_key'];
 
