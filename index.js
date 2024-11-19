@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import serverAuth from './middlewares/server.auth.js';
+// import serverAuth from './middlewares/server.auth.js';
 import serverHealthRoutes from './routes/serverhealth.routes.js';
 import authRoutes from './routes/auth.routes.js';
 
@@ -26,7 +26,7 @@ const corsOptions = {
 };
 
 // Global Middlewares
-app.use(cors(corsOptions));
+app.use(cors()); // Allow all origins, methods, and headers
 app.use(express.json());
 
 // Handle OPTIONS requests globally

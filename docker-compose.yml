@@ -12,6 +12,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.tlsChallenge=true"  # Use ACME TLS challenge for Let's Encrypt
       - "--certificatesresolvers.myresolver.acme.email=support@codemelon.xyz"  # Set your actual email for Let's Encrypt
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"  # Store certs
+      - "--entrypoints.websecure.http.tls=true"  # Enable TLS on websecure
     ports:
       - "80:80"   # HTTP port
       - "443:443" # HTTPS port
