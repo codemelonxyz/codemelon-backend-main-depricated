@@ -18,17 +18,7 @@ const allowedOrigins = [
 
 // CORS configuration
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // Allow requests with no origin
-    if (
-      allowedOrigins.includes(origin) ||
-      /\.codemelon\.xyz$/.test(origin)
-    ) {
-      callback(null, true);
-    } else {
-      callback(null, false); // Deny the origin without error
-    }
-  },
+  origin: true, // Allow all origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   optionsSuccessStatus: 204
