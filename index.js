@@ -29,6 +29,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Handle OPTIONS requests globally
+app.options('*', cors(corsOptions));
+
 // Routes
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -37,12 +40,15 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1', serverHealthRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1', serverHealthRoutes);
 
 // Apply serverAuth to protected routes if necessary
 // app.use('/api/v1/protected', serverAuth, protectedRoutes);
 
 app.listen(port, () => {
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
   console.log(`Server is running on port ${port}`);
 });
