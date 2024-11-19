@@ -10,9 +10,36 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
+const allowedOrigins = [
+  'https://codemelon.xyz',
+  'http://localhost:3000'
+];
+
+// Function to check if the origin is allowed
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (
+      allowedOrigins.includes(origin) ||
+      /\.codemelon\.xyz$/.test(origin)
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Origin not allowed'), false);
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+// Global Middlewares //
+// Configure CORS with the defined options
+app.use(cors(corsOptions));
+
 // Global Middlewares //
 app.use(express.json());
-app.use(cors());
 app.use(serverAuth);
 
 app.get('/', (req, res) => {
