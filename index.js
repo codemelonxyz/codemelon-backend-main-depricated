@@ -26,7 +26,7 @@ const corsOptions = {
     ) {
       callback(null, true);
     } else {
-      callback(new Error('CORS policy: Origin not allowed'), false);
+      callback(null, false); // Deny the origin without error
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
