@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
+// import cors from 'cors';
 // import serverAuth from './middlewares/server.auth.js';
 import serverHealthRoutes from './routes/serverhealth.routes.js';
 import authRoutes from './routes/auth.routes.js';
@@ -26,11 +26,11 @@ const corsOptions = {
 };
 
 // Global Middlewares
-app.use(cors()); // Allow all origins, methods, and headers
+// app.use(cors()); // Allow all origins, methods, and headers
 app.use(express.json());
 
 // Handle OPTIONS requests globally
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
 
 // Routes
 app.get('/', (req, res) => {
