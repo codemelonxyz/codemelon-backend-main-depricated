@@ -21,6 +21,13 @@ class waitlistWatermelonController{
     static async getWaitlistWatermelon(req, res){
         try {
             const status = await waitlistWatermelon.getWaitlistWatermelon();
+            if(!status.data){
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'You are not in the waitlist watermelon',
+                    data: false
+                });
+            }
             res.status(200).json({
                 status: 'success',
                 message: 'You have successfully fetched the waitlist watermelon',
@@ -37,7 +44,7 @@ class waitlistWatermelonController{
     static async addWaitlistWatermelon(req, res){
         try {
             const checkUser = await waitlistWatermelon.checkWaitlistWatermelon(req.authKey.id);
-            if (checkUser) {
+            if (checkUser.data) {
                 return res.status(400).json({
                     status: 'error',
                     message: 'You are already in the waitlist watermelon'
