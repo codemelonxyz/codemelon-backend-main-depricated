@@ -1,13 +1,7 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-// The serverAuth middleware is no longer needed and can be removed.
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 // export default async (req, res, next) => {
-//     if (req.method === 'OPTIONS') {
-//         return next(); // Skip authentication for OPTIONS requests
-//     }
-
 //     const server_key = req.headers['server_key'];
 
 //     console.log(server_key);
