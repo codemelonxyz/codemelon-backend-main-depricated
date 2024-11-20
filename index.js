@@ -17,13 +17,13 @@ const allowedOrigins = [
 ];
 
 // CORS configuration
-const corsOptions = {
-  origin: true, // Allow all origins
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: '*', // Allow all headers
-  credentials: true,
-  optionsSuccessStatus: 204
-};
+// const corsOptions = {
+//   origin: true, // Allow all origins
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: '*', // Allow all headers
+//   credentials: true,
+//   optionsSuccessStatus: 204
+// };
 
 // Global Middlewares
 // app.use(cors()); // Allow all origins, methods, and headers
