@@ -9,7 +9,7 @@ class waitlistWatermelonController{
             res.status(200).json({
                 status: 'success',
                 message: 'You have successfully checked the waitlist watermelon',
-                data: checkUser
+                data: checkUser[0] ? checkUser[1] : false
             });
         } catch (error) {
             res.status(500).json({
@@ -44,7 +44,7 @@ class waitlistWatermelonController{
                 });
             }
             const joinWaitlist = await waitlistWatermelon.joinWaitlistWatermelon(req.authKey.id);
-            if(!joinWaitlist){
+            if(!joinWaitlist[0]){
                 return res.status(400).json({
                     status: 'error',
                     message: 'Failed to join the waitlist watermelon'
@@ -52,7 +52,8 @@ class waitlistWatermelonController{
             }
             res.status(201).json({
                 status: 'success',
-                message: 'You have successfully added to the waitlist watermelon'
+                message: 'You have successfully added to the waitlist watermelon',
+                data: joinWaitlist[1]
             });
         } catch (error) {
             res.status(500).json({
