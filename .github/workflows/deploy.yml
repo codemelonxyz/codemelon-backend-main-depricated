@@ -30,6 +30,7 @@ jobs:
             echo 'MAIN_MAIL_ADDRESS=${{ secrets.MAIN_MAIL_ADDRESS }}' >> .env &&
             echo 'NO_REPLY_MAIL=${{ secrets.NO_REPLY_MAIL }}' >> .env &&
             echo 'MAIL_KEY=${{ secrets.MAIL_KEY }}' >> .env &&
+            echo 'PORT=8000' >> .env &&
             sudo touch letsencrypt/acme.json &&
             sudo chmod 600 letsencrypt/acme.json &&
             sudo docker-compose down || true &&
