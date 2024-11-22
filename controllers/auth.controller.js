@@ -2,6 +2,7 @@ import userModel from "../models/user.model.js";
 import bcryptServices from "../services/bcrypt.services.js";
 import jwtServices from "../services/jwt.services.js";
 import uuidServices from "../services/uuid.services.js";
+import MailServices from "../services/mail.services.js";
 
 class authController {
     constructor() {
@@ -17,7 +18,7 @@ class authController {
             if (status === false) {
                 return res.status(400).json({ error: 'Error creating user' });
             }
-            const token = await jwtServices.generateToken({id, username, email, isAdmin: 0 }, '24h');
+            const token = await jwtServices.generateToken({id, username, email, isAdmin: 0 }, '3d');
             res.status(201).json({ message: 'User created successfully', token, token_type: 'Bearer', token_expires_in: '24h' });
         } catch (err) {
             console.error(err);
@@ -37,10 +38,13 @@ class authController {
         if (user) {
             const checkPassword = await bcryptServices.comparePassword(password, user.password);
             if (!checkPassword) {
-                return res.status(401).json({ error: "Password not correct" });
+                return res.status(401).json({ error: "Password is not correct" });
             }
-            const token = await jwtServices.generateToken({ id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin }, '24h');
-            res.status(201).json({ message: 'User created successfully', token, token_type: 'Bearer', token_expires_in: '24h' });
+            if (!user.isVerified) {
+                return res.status(403).json({ error: "User is not verified. Please verify your Mail" });
+            }
+            const token = await jwtServices.generateToken({ id: user.id, username: user.username, email: user.email, isAdmin: user.isAdmin, isVerified: 1 }, '3d');
+            res.status(201).json({ message: 'User created successfully', token, token_type: 'Bearer', token_expires_in: '3d' });
         } else {
             res.status(404).json({
                 error: "User Not Found"
