@@ -195,6 +195,21 @@ class userModel {
             if (connection) connection.release();
         }
     }
+
+    static async verifyUser(userId) {
+        let connection;
+        try {
+            connection = await pool.getConnection();
+            const query = `UPDATE user SET isVerified = 1 WHERE id = ?`;
+            await connection.query(query, [userId]);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        } finally {
+            if (connection) connection.release();
+        }
+    }
 };
 
 export default userModel;

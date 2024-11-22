@@ -3,6 +3,8 @@ import bcryptServices from "../services/bcrypt.services.js";
 import jwtServices from "../services/jwt.services.js";
 import uuidServices from "../services/uuid.services.js";
 import MailServices from "../services/mail.services.js";
+import fs from 'fs';
+import idVerificationCodesModel from "../models/idVerificationCodes.model.js";
 
 class authController {
     constructor() {
@@ -18,8 +20,29 @@ class authController {
             if (status === false) {
                 return res.status(400).json({ error: 'Error creating user' });
             }
-            const token = await jwtServices.generateToken({id, username, email, isAdmin: 0 }, '3d');
-            res.status(201).json({ message: 'User created successfully', token, token_type: 'Bearer', token_expires_in: '24h' });
+            // Generate verification token and store it in the database
+            const verificationToken = await uuidServices.createToken();
+            await idVerificationCodesModel.addToken(id, verificationToken);
+            // Read signup email template
+            const signupTemplate = fs.readFileSync('./mailTemplates/signup.html', 'utf8');
+            // Send signup successful email
+            await MailServices.sendMailToUser({
+                to: email,
+                subject: 'Welcome to CodeMelon!',
+                html: signupTemplate
+            });
+            // Read verification email template
+            let verificationTemplate = fs.readFileSync('./mailTemplates/verificationMail.html', 'utf8');
+            // Replace placeholder with the verification link
+            const verificationLink = `https://api.codemelon.xyz/verify?token=${verificationToken}`;
+            verificationTemplate = verificationTemplate.replace('{{verification_link}}', verificationLink);
+            // Send verification email
+            await MailServices.sendMailToUser({
+                to: email,
+                subject: 'Verify Your Email - CodeMelon',
+                html: verificationTemplate
+            });
+            res.status(201).json({ message: 'User created successfully' });
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: err.message });
@@ -49,6 +72,42 @@ class authController {
             res.status(404).json({
                 error: "User Not Found"
             })
+        }
+    }
+
+    static async verifyEmail(req, res) {
+        try {
+            const { token } = req.query;
+            if (!token) {
+                return res.status(400).json({ error: 'Verification token is required' });
+            }
+
+            // Check if the token exists and is not used
+            const isUsed = await idVerificationCodesModel.isCodeUsed(token);
+            if (isUsed === null) {
+                return res.status(400).json({ error: 'Invalid verification token' });
+            }
+            if (isUsed) {
+                return res.status(400).json({ error: 'Verification token has already been used' });
+            }
+
+            // Get the user associated with the token
+            const codeData = await idVerificationCodesModel.getTokenData(token);
+            if (!codeData) {
+                return res.status(400).json({ error: 'Invalid verification token' });
+            }
+
+            // Update user's isVerified status
+            const userId = codeData.user_id;
+            await userModel.verifyUser(userId);
+
+            // Mark the token as used
+            await idVerificationCodesModel.updateIsUsed(token);
+
+            res.status(200).json({ message: 'Email verified successfully' });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: err.message });
         }
     }
 
