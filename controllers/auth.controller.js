@@ -23,10 +23,11 @@ class authController {
             // Generate verification token and store it in the database
             const verificationToken = await uuidServices.createToken();
             await idVerificationCodesModel.addToken(id, verificationToken);
+            const mailService = new MailServices();
             // Read signup email template
             const signupTemplate = fs.readFileSync('./mailTemplates/signup.html', 'utf8');
             // Send signup successful email
-            await MailServices.sendMailToUser({
+            await mailService.sendMailToUser({
                 to: email,
                 subject: 'Welcome to CodeMelon!',
                 html: signupTemplate
@@ -37,7 +38,7 @@ class authController {
             const verificationLink = `https://api.codemelon.xyz/verify?token=${verificationToken}`;
             verificationTemplate = verificationTemplate.replace('{{verification_link}}', verificationLink);
             // Send verification email
-            await MailServices.sendMailToUser({
+            await mailService.sendMailToUser({
                 to: email,
                 subject: 'Verify Your Email - CodeMelon',
                 html: verificationTemplate
