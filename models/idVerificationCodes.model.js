@@ -1,4 +1,4 @@
-import pool from '../config/database.js';
+import pool from '../config/db.config.js';
 
 class idVerificationCodesModel {
     static async addToken(user_id, code) {
