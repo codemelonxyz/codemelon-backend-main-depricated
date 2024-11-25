@@ -35,7 +35,7 @@ class authController {
             // Read verification email template
             let verificationTemplate = fs.readFileSync('./mailTemplates/verificationMail.html', 'utf8');
             // Replace placeholder with the verification link
-            const verificationLink = `https://api.codemelon.xyz/verify?token=${verificationToken}`;
+            const verificationLink = `https://api.codemelon.xyz/api/v1/auth/verify?token=${verificationToken}`;
             verificationTemplate = verificationTemplate.replace('{{verification_link}}', verificationLink);
             // Send verification email
             await mailService.sendMailToUser({
